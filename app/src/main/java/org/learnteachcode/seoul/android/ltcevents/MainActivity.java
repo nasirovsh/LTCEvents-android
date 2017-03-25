@@ -1,5 +1,6 @@
 package org.learnteachcode.seoul.android.ltcevents;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,8 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+
+    Boolean isFirstTimeGetFocused;
+    EditText editText;
+    public void buttonClick(View view){
+        Intent maria = new Intent(this, DisplayMessageActivity.class);
+        EditText josie = (EditText) findViewById(R.id.editText);
+        String message = josie.getText().toString();
+        maria.putExtra("com.android.ltc.yourname",message);
+        startActivity(maria);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        isFirstTimeGetFocused = true;
+        editText = (EditText) findViewById(R.id.editText);
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus && isFirstTimeGetFocused) {
+                    editText.setText("");
+                    isFirstTimeGetFocused = false;
+                }
             }
         });
     }
